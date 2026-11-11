@@ -1,0 +1,79 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:#111; font-family:Inter, sans-serif; }
+    #root .abs { position:absolute; }
+    #s1-cam { position:absolute; inset:0; }
+    
+  </style>
+  <div id="root" data-composition-id="s1" data-width="1080" data-height="1920" data-layout-allow-overflow data-layout-allow-overlap>
+    <div id="s1-cam">
+<svg class="abs" style="inset:0" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
+  <defs><linearGradient id="s1-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2dcc0"/><stop offset="1" stop-color="#d9b48b"/></linearGradient>
+  <linearGradient id="s1-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9d6f0"/><stop offset="1" stop-color="#e8f4fa"/></linearGradient></defs>
+  <rect width="1080" height="1920" fill="url(#s1-wall)"/>
+  <rect x="70" y="230" width="940" height="1000" rx="14" fill="url(#s1-sky)"/>
+  <g fill="#c9b8a4"><rect x="90" y="620" width="230" height="610"/><rect x="340" y="520" width="260" height="710" fill="#d8c7b0"/><rect x="620" y="680" width="380" height="550" fill="#bfae98"/></g>
+  <g fill="#9fc2d8" opacity=".8"><rect x="110" y="700" width="56" height="80" rx="4"/><rect x="260" y="700" width="56" height="80" rx="4"/><rect x="410" y="700" width="56" height="80" rx="4"/><rect x="560" y="700" width="56" height="80" rx="4"/><rect x="710" y="700" width="56" height="80" rx="4"/><rect x="860" y="700" width="56" height="80" rx="4"/><rect x="110" y="850" width="56" height="80" rx="4"/><rect x="260" y="850" width="56" height="80" rx="4"/><rect x="410" y="850" width="56" height="80" rx="4"/><rect x="560" y="850" width="56" height="80" rx="4"/><rect x="710" y="850" width="56" height="80" rx="4"/><rect x="860" y="850" width="56" height="80" rx="4"/><rect x="110" y="1000" width="56" height="80" rx="4"/><rect x="260" y="1000" width="56" height="80" rx="4"/><rect x="410" y="1000" width="56" height="80" rx="4"/><rect x="560" y="1000" width="56" height="80" rx="4"/><rect x="710" y="1000" width="56" height="80" rx="4"/><rect x="860" y="1000" width="56" height="80" rx="4"/></g>
+  <g stroke="#6b4a33" stroke-width="22" fill="none"><rect x="70" y="230" width="940" height="1000" rx="14"/><path d="M540,230 V1230 M70,700 H1010"/></g>
+  <g fill="#7aa35a"><circle cx="160" cy="1190" r="70"/><circle cx="230" cy="1160" r="60"/><rect x="150" y="1190" width="100" height="70" fill="#a0603a"/></g>
+</svg>
+      <div id="s1-lara" class="abs" style="left:150px;top:560px;width:780px"><svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;overflow:visible">
+  <path d="M150,330 C112,450 104,580 138,680 C158,724 206,708 214,664 L386,664 C394,708 442,724 462,680 C496,580 488,450 450,330 Z" fill="#7a3518"/>
+  <path d="M50,900 C60,724 146,644 300,634 C454,644 540,724 550,900 Z" fill="#efe4cf"/>
+        <path d="M240,640 Q300,668 360,640 L336,900 L264,900 Z" fill="#ffffff"/>
+        <path d="M240,640 L214,712 L272,900 L262,740 Z" fill="#d7c8aa"/>
+        <path d="M360,640 L386,712 L328,900 L338,740 Z" fill="#d7c8aa"/>
+  <rect x="262" y="520" width="76" height="124" rx="30" fill="#dea883"/>
+  <ellipse cx="177" cy="414" rx="19" ry="31" fill="#dea883"/>
+  <ellipse cx="423" cy="414" rx="19" ry="31" fill="#dea883"/>
+  <ellipse cx="300" cy="400" rx="126" ry="156" fill="#f3c6a5"/>
+  <ellipse cx="226" cy="462" rx="28" ry="14" fill="#ff8a7a" opacity=".22"/>
+  <ellipse cx="374" cy="462" rx="28" ry="14" fill="#ff8a7a" opacity=".22"/>
+  <g id="s1-lara-eyes">
+    <ellipse cx="250" cy="404" rx="25" ry="16" fill="#fff"/>
+    <circle cx="250" cy="405" r="12.5" fill="#6b4226"/>
+    <circle cx="250" cy="405" r="6" fill="#111"/>
+    <circle cx="254" cy="400" r="3.2" fill="#fff"/>
+    <path d="M223,400 Q250,382 277,400" stroke="#2a1a12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <ellipse cx="350" cy="404" rx="25" ry="16" fill="#fff"/>
+    <circle cx="350" cy="405" r="12.5" fill="#6b4226"/>
+    <circle cx="350" cy="405" r="6" fill="#111"/>
+    <circle cx="354" cy="400" r="3.2" fill="#fff"/>
+    <path d="M323,400 Q350,382 377,400" stroke="#2a1a12" stroke-width="6" fill="none" stroke-linecap="round"/></g>
+  <path d="M300,416 Q288,452 298,462 Q310,464 318,456" stroke="#dea883" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <g id="s1-lara-x-normal" opacity="1"><path d="M218,356 Q250,342 282,354" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M318,354 Q350,342 382,356" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M268,500 Q300,516 332,500" stroke="#c46a64" stroke-width="7" stroke-linecap="round" fill="none"/></g><g id="s1-lara-x-happy" opacity="0"><path d="M216,346 Q250,328 284,344" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M316,344 Q350,328 384,346" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M258,492 Q300,552 342,492 Q300,506 258,492 Z" fill="#7a1f24"/><path d="M268,496 Q300,506 332,496 L328,508 Q300,514 272,508 Z" fill="#fff"/></g><g id="s1-lara-x-angry" opacity="0"><path d="M214,348 L284,374" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M386,348 L316,374" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M266,514 Q300,494 334,514" stroke="#c46a64" stroke-width="8" stroke-linecap="round" fill="none"/></g><g id="s1-lara-x-shock" opacity="0"><path d="M214,330 Q250,310 284,328" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M316,328 Q350,310 386,330" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><ellipse cx="300" cy="510" rx="17" ry="24" fill="#5a1418"/></g><g id="s1-lara-x-sad" opacity="0"><path d="M220,368 L284,346" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M380,368 L316,346" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M270,514 Q300,498 330,514" stroke="#c46a64" stroke-width="7" stroke-linecap="round" fill="none"/></g><g id="s1-lara-x-cold" opacity="0"><path d="M216,362 L284,362" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M316,362 L384,362" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M274,506 L326,506" stroke="#c46a64" stroke-width="7" stroke-linecap="round" fill="none"/></g><g id="s1-lara-x-embar" opacity="0"><path d="M220,366 L284,348" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M380,366 L316,348" stroke="#7a3518" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M272,508 Q286,500 300,508 Q314,516 328,508" stroke="#c46a64" stroke-width="7" stroke-linecap="round" fill="none"/><ellipse cx="226" cy="460" rx="34" ry="18" fill="#ff6b6b" opacity=".45"/><ellipse cx="374" cy="460" rx="34" ry="18" fill="#ff6b6b" opacity=".45"/></g>
+  <circle cx="232" cy="448" r="3" fill="#b8734d" opacity=".7"/><circle cx="246" cy="458" r="3" fill="#b8734d" opacity=".7"/><circle cx="222" cy="462" r="3" fill="#b8734d" opacity=".7"/><circle cx="368" cy="448" r="3" fill="#b8734d" opacity=".7"/><circle cx="354" cy="458" r="3" fill="#b8734d" opacity=".7"/><circle cx="378" cy="462" r="3" fill="#b8734d" opacity=".7"/><circle cx="290" cy="440" r="3" fill="#b8734d" opacity=".7"/><circle cx="310" cy="440" r="3" fill="#b8734d" opacity=".7"/><circle cx="178" cy="452" r="10" fill="none" stroke="#e0b44c" stroke-width="4"/><circle cx="422" cy="452" r="10" fill="none" stroke="#e0b44c" stroke-width="4"/>
+  
+  <path d="M170,398 C160,258 238,212 306,214 C388,218 442,280 432,404 C420,330 382,292 332,282 C300,326 232,336 190,404 Z" fill="#9c4a25"/>
+              <path d="M172,380 C156,470 164,566 186,620 C200,626 210,612 204,596 C192,520 194,452 206,398 Z" fill="#9c4a25"/>
+              <path d="M428,380 C444,470 436,566 414,620 C400,626 390,612 396,596 C408,520 406,452 394,398 Z" fill="#9c4a25"/>
+              <path d="M330,286 C360,300 396,330 414,372" stroke="#7a3518" stroke-width="5" fill="none" opacity=".6"/>
+</svg></div>
+      <svg class="abs" style="left:0;top:1430px;width:1080px;height:490px" viewBox="0 0 1080 490"><rect width="1080" height="490" fill="#7a4a2e"/><rect width="1080" height="26" fill="#9a6340"/></svg>
+      <svg class="abs" style="left:700px;top:1290px;width:220px;height:200px" viewBox="0 0 220 200"><path d="M20,40 L180,40 L160,190 L40,190 Z" fill="#fff"/><path d="M180,70 C230,70 230,140 172,140" stroke="#fff" stroke-width="18" fill="none"/><ellipse cx="100" cy="42" rx="80" ry="14" fill="#c08a5b"/><path d="M80,40 C90,10 110,10 120,40" stroke="#fff" stroke-width="6" fill="none" opacity=".6"/></svg>
+      <div id="s1-phone" class="abs" style="left:250px;top:1300px;width:240px;height:150px;border-radius:26px;background:#111;border:6px solid #333"><div id="s1-glow" class="abs" style="inset:6px;border-radius:18px;background:linear-gradient(135deg,#4fd1ff,#a46bff);opacity:0"></div></div>
+      <div id="s1-ring" class="abs" style="left:300px;top:1255px;width:140px;height:140px;border-radius:50%;border:8px solid #fff;opacity:0"></div>
+      <div id="s1-vig" class="abs" style="inset:0;background:radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.35) 100%)"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#s1-cam",{scale:1},{scale:1.07,duration:5,ease:"none",transformOrigin:"50% 45%"},0);
+    tl.fromTo("#s1-lara",{y:0},{y:-5,duration:0.90,ease:"sine.inOut",immediateRender:true},0.00);
+    tl.fromTo("#s1-lara",{y:-5},{y:0,duration:0.90,ease:"sine.inOut",immediateRender:false},0.90);
+    tl.fromTo("#s1-lara",{y:0},{y:-5,duration:0.90,ease:"sine.inOut",immediateRender:false},1.80);
+    tl.fromTo("#s1-lara",{y:-5},{y:0,duration:0.90,ease:"sine.inOut",immediateRender:false},2.70);
+    tl.fromTo("#s1-lara",{y:0},{y:-5,duration:0.70,ease:"sine.inOut",immediateRender:false},3.60);
+    tl.fromTo("#s1-lara",{y:-5},{y:0,duration:0.70,ease:"sine.inOut",immediateRender:false},4.30);
+    tl.fromTo("#s1-glow",{opacity:0},{opacity:1,duration:0.15},0.5);
+    tl.fromTo("#s1-ring",{opacity:0.9,scale:0.6},{opacity:0,scale:1.8,duration:0.7,ease:"power2.out"},0.5);
+    tl.fromTo("#s1-phone",{y:0,rotation:0},{y:-90,x:-60,rotation:-8,duration:0.5,ease:"power3.out"},1.0);
+    tl.fromTo("#s1-lara-eyes",{scaleY:1},{scaleY:0.1,duration:0.07,transformOrigin:"50% 50%",ease:"none"},0.3);
+    tl.fromTo("#s1-lara-eyes",{scaleY:0.1},{scaleY:1,duration:0.08,transformOrigin:"50% 50%",ease:"none",immediateRender:false},0.37);
+    tl.fromTo("#s1-lara-x-normal",{opacity:1},{opacity:0,duration:0.14,ease:"none"},1.4);
+    tl.fromTo("#s1-lara-x-shock",{opacity:0},{opacity:1,duration:0.14,ease:"none"},1.4);
+    tl.fromTo("#s1-lara-eyes",{scaleY:1},{scaleY:0.1,duration:0.07,transformOrigin:"50% 50%",ease:"none",immediateRender:false},3.6);
+    tl.fromTo("#s1-lara-eyes",{scaleY:0.1},{scaleY:1,duration:0.08,transformOrigin:"50% 50%",ease:"none",immediateRender:false},3.67);
+    window.__timelines["s1"] = tl;
+  </script>
+</template>
