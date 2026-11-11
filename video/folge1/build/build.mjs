@@ -324,7 +324,7 @@ const files = {};
   const id = "s10", tl = new TL().init("s10-emir", "sad");
   const m = `${bgStore(id)}
       ${person("s10-emir", "emir", "sad", "left:90px;top:520px;width:900px")}
-      <div id="s10-box" class="abs" style="left:330px;top:1180px;width:420px;height:360px">
+      <div id="s10-box" class="abs" style="left:640px;top:930px;width:400px;height:343px">
         <svg class="abs" style="inset:0" viewBox="0 0 420 360">
           <path d="M60,150 L360,150 L340,110 L80,110 Z" fill="#7a0c1d"/>
           <path d="M60,40 L360,40 L360,150 L60,150 Z" fill="#d81b3a"/>
@@ -399,10 +399,10 @@ const CAPS = [
   [15.5, 4.3, "SOPHIE", "DER HIER! SIE WIRD *AUSRASTEN*"],
   [20.9, 3.9, "LARA", "*EMIR.*"],
   [25.5, 4.3, "EMIR", "LARA?! WAS *MACHST* DU HIER?"],
-  [30.4, 4.4, "LARA", "WER IST *DIE*?!"],
-  [35.4, 4.4, "SOPHIE", "HI … ICH BIN SOPHIE. SEINE *SCHWESTER*."],
+  [30.4, 4.4, "LARA", "WER IST *DIE?!*"],
+  [35.4, 4.4, "SOPHIE", "HI … ICH BIN SOPHIE. SEINE *SCHWESTER.*"],
   [41.0, 3.8, "LARA", "SEINE … *SCHWESTER?*"],
-  [45.5, 4.3, "EMIR", "DER WAR FÜR SAMSTAG. ICH WOLLTE DICH *FRAGEN*."],
+  [45.5, 4.3, "EMIR", "DER WAR FÜR SAMSTAG. ICH WOLLTE DICH *FRAGEN.*"],
   [55.4, 2.8, "EMIR", "LARA … WAS IST *LETZTEN SAMSTAG* PASSIERT?"],
 ];
 const COLORS = { LARA: "#ff8a4c", EMIR: "#4cc3ff", SOPHIE: "#b38bff", MILA: "#ff4c8b" };
