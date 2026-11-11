@@ -440,11 +440,9 @@ const COLORS = { LARA: "#ff8a4c", EMIR: "#4cc3ff", SOPHIE: "#b38bff", MILA: "#ff
     .w { display:inline-block; }
     .key .w { background:#e11d2e; color:#fff; -webkit-text-stroke:0; padding:0 14px; border-radius:12px; text-shadow:none; }
     #hook-text { position:absolute; left:60px; right:60px; top:230px; text-align:center; color:#fff; font-weight:900; font-size:64px; line-height:1.15; -webkit-text-stroke:10px #000; paint-order:stroke fill; }
-    #handle { position:absolute; right:60px; top:200px; color:#fff; opacity:.75; font-weight:700; font-size:30px; -webkit-text-stroke:6px #000; paint-order:stroke fill; }
   </style>
   <div id="root" data-composition-id="captions" data-width="${W}" data-height="${H}" data-layout-allow-overlap>
     <div id="hook" class="clip" data-start="0" data-duration="3.4" data-track-index="0"><div id="hook-text">Sie dachte, er betrügt sie… 💔</div></div>
-    <div id="handle-c" class="clip" data-start="3.4" data-duration="54.9" data-track-index="2"><div id="handle">@zweiherzen.ki</div></div>
     ${groups.join("\n    ")}
   </div>
   <script>
