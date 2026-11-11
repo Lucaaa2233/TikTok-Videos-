@@ -69,7 +69,19 @@ gain[: int(0.0 * SR)] = 1
 ramp(39.6, 40.0, 1, 0); gain[int(40.0 * SR): int(45.0 * SR)] = 0
 ramp(45.0, 46.0, 0, 0.55); gain[int(46.0 * SR): int(54.8 * SR)] = 0.55
 ramp(54.8, 55.1, 0.55, 0); gain[int(55.1 * SR):] = 0
-out += music * gain
+import json
+VO = json.load(open(os.path.join(os.path.dirname(__file__), "voices.json")))
+voice = np.zeros(N); active = np.zeros(N)
+for v in VO:
+    with wave.open(os.path.join(os.path.dirname(__file__), "..", v["file"])) as w:
+        sr = w.getframerate(); x = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(float) / 32768
+    x = np.interp(np.arange(int(len(x) * SR / sr)) * sr / SR, np.arange(len(x)), x)
+    x = x / max(1e-9, np.max(np.abs(x))) * 0.95
+    i = int(v["start"] * SR); j = min(N, i + len(x))
+    voice[i:j] += x[: j - i]
+    active[max(0, i - int(0.25 * SR)): min(N, j + int(0.35 * SR))] = 1
+k = int(0.15 * SR); active = np.convolve(active, np.ones(k) / k, mode="same")
+out += music * gain * (1 - 0.6 * active) * 0.8
 
 # ---- sfx
 ping = tone([1318.5, 2637], 0.25, a=0.002, r=0.1, decay=0.12)
@@ -118,6 +130,7 @@ place(tone([2637, 3951, 5274], 1.2, a=0.002, r=0.5, decay=0.4), 45.4, 0.2)
 place(hit(1.6), 58.3, 1.0)
 place(tone([220, 261.63, 311.13], 1.6, a=0.01, r=0.8), 58.3, 0.25)
 
+out = out * 0.55 + voice * 0.9
 # normalize
 out = out / max(1e-9, np.max(np.abs(out))) * 0.89
 pcm = (out * 32767).astype(np.int16)

@@ -4,6 +4,25 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { char, EXPRS } from "./chars.mjs";
+import { readFileSync } from "node:fs";
+const VOICES = JSON.parse(readFileSync(new URL("./voices.json", import.meta.url), "utf8"));
+const SCENE_START = (id) => (parseInt(id.slice(1)) - 1) * 5;
+// mouth movement from the voice envelope (15 steps per second)
+function talkCode(id) {
+  const out = [];
+  for (const v of VOICES.filter((v) => v.scene === id && v.pref)) {
+    const sel = `#${v.pref}-talk`, t0 = v.start - SCENE_START(id), dt = 1 / 15;
+    out.push(`tl.fromTo("${sel}",{opacity:0},{opacity:1,duration:0.04,ease:"none"},${t0.toFixed(2)});`);
+    let prev = 0.15;
+    v.env.forEach((e, k) => {
+      const to = Math.max(0.12, Math.min(1, e));
+      out.push(`tl.fromTo("${sel}",{scaleY:${prev}},{scaleY:${to.toFixed(2)},duration:${dt.toFixed(3)},ease:"none",transformOrigin:"50% 20%",immediateRender:${k === 0}},${(t0 + k * dt).toFixed(3)});`);
+      prev = to.toFixed(2);
+    });
+    out.push(`tl.fromTo("${sel}",{opacity:1},{opacity:0,duration:0.06,ease:"none",immediateRender:false},${(t0 + v.dur).toFixed(2)});`);
+  }
+  return out.join("\n    ");
+}
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 mkdirSync(join(ROOT, "compositions"), { recursive: true });
@@ -74,6 +93,7 @@ ${markup}
   <script>
     const tl = gsap.timeline({ paused: true });
     ${tl.code()}
+    ${talkCode(id)}
     window.__timelines["${id}"] = tl;
   </script>
 </template>
@@ -89,27 +109,59 @@ const bgCafe = (id) => `<svg class="abs" style="inset:0" viewBox="0 0 ${W} ${H}"
   <linearGradient id="${id}-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9d6f0"/><stop offset="1" stop-color="#e8f4fa"/></linearGradient></defs>
   <rect width="${W}" height="${H}" fill="url(#${id}-wall)"/>
   <rect x="70" y="230" width="940" height="1000" rx="14" fill="url(#${id}-sky)"/>
-  <g fill="#c9b8a4"><rect x="90" y="620" width="230" height="610"/><rect x="340" y="520" width="260" height="710" fill="#d8c7b0"/><rect x="620" y="680" width="380" height="550" fill="#bfae98"/></g>
-  <g fill="#9fc2d8" opacity=".8">${Array.from({ length: 18 }, (_, i) => `<rect x="${110 + (i % 6) * 150}" y="${700 + Math.floor(i / 6) * 150}" width="56" height="80" rx="4"/>`).join("")}</g>
+  <svg x="70" y="230" width="940" height="1000" viewBox="0 0 940 1000"><rect y="880" width="940" height="120" fill="#7a8a99"/>${skyline(-40, 880, 0.95, false)}<rect y="880" width="940" height="10" fill="#5f6f7e"/></svg>
   <g stroke="#6b4a33" stroke-width="22" fill="none"><rect x="70" y="230" width="940" height="1000" rx="14"/><path d="M540,230 V1230 M70,700 H1010"/></g>
   <g fill="#7aa35a"><circle cx="160" cy="1190" r="70"/><circle cx="230" cy="1160" r="60"/><rect x="150" y="1190" width="100" height="70" fill="#a0603a"/></g>
 </svg>`;
+
+// Frankfurt-style skyline (illustrated): pencil-top tower, tower with antenna, round tower, twin glass towers
+function skyline(x0, base, k, dusk) {
+  const body = dusk ? ["#2b2442", "#352c52", "#241f38"] : ["#8193a8", "#9fb0c2", "#6f8399"];
+  const lit = dusk ? "#ffd98a" : "#c9dbe9";
+  const T = [
+    [0, 120, 420, "box"], [130, 90, 610, "twin"], [230, 90, 640, "twin"], [340, 150, 760, "commerz"],
+    [510, 110, 560, "box"], [630, 120, 700, "main"], [770, 100, 470, "box"], [880, 110, 800, "messe"],
+    [1010, 140, 380, "box"], [1160, 100, 520, "box"],
+  ];
+  return T.map(([x, w, h, t], i) => {
+    x = x0 + x * k; w *= k; h *= k;
+    const top = base - h, col = body[i % 3];
+    let shape = `<rect x="${x}" y="${top}" width="${w}" height="${h}" fill="${col}"/>`;
+    if (t === "messe") shape = `<path d="M${x},${base} L${x},${top + 90 * k} L${x + w / 2},${top} L${x + w},${top + 90 * k} L${x + w},${base} Z" fill="${col}"/>`;
+    if (t === "commerz") shape += `<rect x="${x + w * 0.3}" y="${top - 40 * k}" width="${w * 0.4}" height="${40 * k}" fill="${col}"/><rect x="${x + w / 2 - 3}" y="${top - 140 * k}" width="6" height="${100 * k}" fill="${col}"/>`;
+    if (t === "main") shape = `<rect x="${x}" y="${top}" width="${w}" height="${h}" rx="${w / 2}" ry="${30 * k}" fill="${col}"/><rect x="${x + w / 2 - 3}" y="${top - 90 * k}" width="6" height="${90 * k}" fill="${col}"/>`;
+    if (t === "twin") shape = `<path d="M${x},${base} L${x},${top + 30 * k} L${x + w},${top} L${x + w},${base} Z" fill="${col}"/>`;
+    let win = "";
+    for (let r = top + 40 * k; r < base - 20; r += 34 * k)
+      for (let c = x + 12 * k; c < x + w - 14 * k; c += 24 * k)
+        if (((Math.round(r) + Math.round(c) * 3 + i) % 5) < (dusk ? 2 : 4)) win += `<rect x="${c.toFixed(1)}" y="${r.toFixed(1)}" width="${(10 * k).toFixed(1)}" height="${(14 * k).toFixed(1)}" fill="${lit}" opacity="${dusk ? 0.9 : 0.55}"/>`;
+    return shape + win;
+  }).join("");
+}
 
 const bgStreet = (id, dusk = false) => `<svg class="abs" style="left:0;top:0;width:${W * 2}px;height:${H}px" id="${id}-street" viewBox="0 0 ${W * 2} ${H}">
   <defs><linearGradient id="${id}-sk" x1="0" y1="0" x2="0" y2="1">${dusk
     ? `<stop offset="0" stop-color="#3b2a5c"/><stop offset=".55" stop-color="#d9708a"/><stop offset="1" stop-color="#f6b26b"/>`
     : `<stop offset="0" stop-color="#8ec9f0"/><stop offset="1" stop-color="#dff1fb"/>`}</linearGradient></defs>
   <rect width="${W * 2}" height="${H}" fill="url(#${id}-sk)"/>
-  ${Array.from({ length: 8 }, (_, i) => {
-    const x = i * 270, h = 900 + ((i * 137) % 300), y = 1500 - h;
-    const cols = dusk ? ["#5b4a6e", "#6d5a7e", "#4f4060"] : ["#e8d8c0", "#f1e6d2", "#d9c4a3"];
-    const win = dusk ? "#ffd27a" : "#9fc2d8";
-    return `<rect x="${x}" y="${y}" width="270" height="${h}" fill="${cols[i % 3]}" stroke="#00000022" stroke-width="4"/>` +
-      Array.from({ length: 12 }, (_, j) => `<rect x="${x + 40 + (j % 3) * 70}" y="${y + 60 + Math.floor(j / 3) * 150}" width="44" height="80" rx="4" fill="${win}" opacity="${dusk ? ((i + j) % 3 ? 0.9 : 0.3) : 0.85}"/>`).join("");
-  }).join("")}
-  <rect y="1500" width="${W * 2}" height="420" fill="${dusk ? "#3a3346" : "#a8a29a"}"/>
-  ${Array.from({ length: 40 }, (_, i) => `<rect x="${(i % 20) * 108 + (Math.floor(i / 20) % 2) * 54}" y="${1530 + Math.floor(i / 20) * 70}" width="96" height="56" rx="10" fill="${dusk ? "#2e2838" : "#958f87"}"/>`).join("")}
-  ${[300, 1100, 1900].map((x) => `<rect x="${x}" y="900" width="16" height="620" fill="#2b2b30"/><circle cx="${x + 8}" cy="890" r="30" fill="${dusk ? "#ffe6a3" : "#3a3a40"}"/>`).join("")}
+  ${dusk ? `<circle cx="1500" cy="1050" r="120" fill="#ffd38a" opacity=".55"/>` : ""}
+  ${skyline(0, dusk ? 1260 : 1150, 1.15, dusk)}${skyline(1300, dusk ? 1260 : 1150, 1.0, dusk)}
+  ${dusk
+    ? `<rect y="1260" width="${W * 2}" height="260" fill="#4a3d6e"/>
+       ${Array.from({ length: 30 }, (_, i) => `<rect x="${(i * 173) % (W * 2)}" y="${1280 + (i * 37) % 220}" width="${60 + (i * 29) % 90}" height="5" rx="2" fill="#ffd98a" opacity=".45"/>`).join("")}
+       <g stroke="#1d1a2b" stroke-width="10" fill="none"><path d="M200,1380 Q600,1180 1000,1380 Q1400,1180 1800,1380"/><path d="M200,1400 L1800,1400"/>
+       ${Array.from({ length: 16 }, (_, i) => `<path d="M${200 + i * 100},1400 L${250 + i * 100},${1400 - 120 * Math.sin(Math.PI * ((i % 8) + 0.5) / 8)}"/>`).join("")}</g>
+       <rect x="180" y="1380" width="30" height="140" fill="#1d1a2b"/><rect x="985" y="1380" width="30" height="140" fill="#1d1a2b"/><rect x="1790" y="1380" width="30" height="140" fill="#1d1a2b"/>
+       <rect y="1520" width="${W * 2}" height="400" fill="#3a3346"/>`
+    : Array.from({ length: 8 }, (_, i) => {
+        const x = i * 270, h = 520 + ((i * 137) % 220), y = 1500 - h;
+        const cols = ["#e8d8c0", "#f1e6d2", "#d9c4a3"];
+        return `<rect x="${x}" y="${y}" width="270" height="${h}" fill="${cols[i % 3]}" stroke="#00000022" stroke-width="4"/>` +
+          `<rect x="${x}" y="${1500 - 170}" width="270" height="170" fill="#5d6b7a"/><rect x="${x + 20}" y="${1500 - 150}" width="230" height="130" fill="#c7e0ee" opacity=".8"/>` +
+          Array.from({ length: 6 }, (_, j) => `<rect x="${x + 40 + (j % 3) * 70}" y="${y + 60 + Math.floor(j / 3) * 140}" width="44" height="80" rx="4" fill="#9fc2d8" opacity=".85"/>`).join("");
+      }).join("") + `<rect y="1500" width="${W * 2}" height="420" fill="#a8a29a"/>`}
+  ${Array.from({ length: 40 }, (_, i) => `<rect x="${(i % 20) * 108 + (Math.floor(i / 20) % 2) * 54}" y="${1550 + Math.floor(i / 20) * 70}" width="96" height="56" rx="10" fill="${dusk ? "#2e2838" : "#958f87"}"/>`).join("")}
+  ${[300, 1100, 1900].map((x) => `<rect x="${x}" y="${dusk ? 1100 : 900}" width="16" height="${dusk ? 450 : 620}" fill="#2b2b30"/><circle cx="${x + 8}" cy="${dusk ? 1090 : 890}" r="30" fill="${dusk ? "#ffe6a3" : "#3a3a40"}"/>`).join("")}
 </svg>`;
 
 const bgStore = (id) => `<svg class="abs" style="inset:0" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice">
@@ -439,9 +491,12 @@ const COLORS = { LARA: "#ff8a4c", EMIR: "#4cc3ff", SOPHIE: "#b38bff", MILA: "#ff
     .line { text-align:center; color:#fff; font-weight:900; font-size:76px; line-height:1.18; -webkit-text-stroke:12px #000; paint-order:stroke fill; text-shadow:0 8px 24px rgba(0,0,0,.5); }
     .w { display:inline-block; }
     .key .w { background:#e11d2e; color:#fff; -webkit-text-stroke:0; padding:0 14px; border-radius:12px; text-shadow:none; }
+    .loc { position:absolute; left:50%; top:330px; transform:translateX(-50%); white-space:nowrap; background:rgba(0,0,0,.6); color:#fff; font-weight:700; font-size:34px; padding:10px 24px; border-radius:40px; }
     #hook-text { position:absolute; left:60px; right:60px; top:230px; text-align:center; color:#fff; font-weight:900; font-size:64px; line-height:1.15; -webkit-text-stroke:10px #000; paint-order:stroke fill; }
   </style>
   <div id="root" data-composition-id="captions" data-width="${W}" data-height="${H}" data-layout-allow-overlap>
+    ${[["loc1", 0, 3.4, "📍 Café am Main · Frankfurt"], ["loc3", 10.1, 2.6, "📍 Zeil · Frankfurt"], ["loc4", 15.1, 2.6, "📍 Juwelier · Goethestraße"], ["loc11", 50.1, 0.8, "📍 Mainkai · Frankfurt"]]
+      .map(([i, st, d, t]) => `<div id="${i}" class="clip" data-start="${st}" data-duration="${d}" data-track-index="3"><div class="loc">${t}</div></div>`).join("\n    ")}
     <div id="hook" class="clip" data-start="0" data-duration="3.4" data-track-index="0"><div id="hook-text">Sie dachte, er betrügt sie… 💔</div></div>
     ${groups.join("\n    ")}
   </div>

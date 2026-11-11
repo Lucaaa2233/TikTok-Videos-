@@ -1,3 +1,4 @@
 .hyperframes/
 render.log
 node_modules/
+build/voices/

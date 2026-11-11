@@ -159,6 +159,7 @@ export function char(p, who, expr = "normal", { tears = false } = {}) {
   <path d="M300,416 Q288,452 298,462 Q310,464 318,456" stroke="${c.skinDark}" stroke-width="6" fill="none" stroke-linecap="round"/>
   ${EXPRS.map((x) => expression(p, x, c, x === expr)).join("")}
   ${extras}
+  <g id="${p}-talk" opacity="0"><ellipse cx="300" cy="507" rx="23" ry="17" fill="#5a1418"/><path d="M284,496 Q300,492 316,496 L314,502 Q300,500 286,502 Z" fill="#fff"/></g>
   ${tearsSvg}
   ${hairFront(who, c)}
 </svg>`;
